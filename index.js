@@ -15,8 +15,8 @@ app.use(bodyParser.json())
 app.get('/api/macp', (req, res) => {
 	Product.find({}, (err, macp) => {
       if (err) return res. status(500).send({ message:`Error al realizar la peticion ${err}` })
-   if (!macp) return res.status(404).send({ message: `No existen los productos` })
-   res.status(200).send({macp});
+   		if (!macp) return res.status(404).send({ message: `No existen los productos` })
+   			res.status(200).send({macp});
     });
 });
 
@@ -25,11 +25,10 @@ app.get('/api/macp/:productId', (req, res) => {
         Product.findById(productId, (err, macp) => {
                 if (err) return res.status(500).send({ message: `Error al realizar la peticion ${err}` })
                 //busca por id en la bd
-                if (!fgemproduct) return res.status(400).send({ message: `El producto no existe` })//si el producto no existe el !niega
+                if (!macp) return res.status(400).send({ message: `El producto no existe` })//si el producto no existe el !niega
                 res.send(200, { macp });
         })
 });
-})
 
 app.post('/api/macp', (req, res) => {
 	console.log('POST /api/macp')
@@ -71,10 +70,11 @@ app.put('/api/macp/:productId', (req, res) => {
 
 app.delete('/api/macp/:productId', (req, res) => {
 	let productId = req.params.productId
+	console.log(productId)
         Product.findById(productId, (err, macp) => {
     
                 if (err) return res.status(500).send({ message: `Error al borrar el producto ${err}` })
-                Product.remove(err => {
+                macp.remove(err => {
                         if (err) return res.status(500).send({ message: `Error al borrar el producto ${err}` })
                                 res.status(200).send({ message: `El producto ha sido borrado` })
                 })
@@ -87,8 +87,8 @@ mongoose.connect('mongodb://localhost:27017/macdb', (err, res) => {
 	}
 	console.log('Conexion a la base de datos establecida...')
 	
-app.listen(port, () => {
-	console.log(`API REST corriendo en localhost:${port}`)
-})
+	app.listen(port, () => {
+		console.log(`API REST corriendo en localhost:${port}`)
+	})
 
-})
+});
